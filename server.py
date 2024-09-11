@@ -2,7 +2,7 @@ import socket
 import datetime
 
 ip = '127.0.0.1'
-port = 49152
+port = 5000
 
 s1 = socket.socket()
 s1.bind((ip, port))
