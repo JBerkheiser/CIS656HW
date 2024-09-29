@@ -3,40 +3,53 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime; 
+import java.time.format.DateTimeFormatter; 
 
 public class ProviderApp {
-    private Calculator calculator = new CalculatorImpl();
+    private Messager messager = new MessagerImpl();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException 
+    {
         new ProviderApp().begin();
     }
 
-    private void begin() throws IOException {
+    private void begin() throws IOException 
+    {
         ServerSocket listener = new ServerSocket(9090);
         System.out.println("The server is running");
       
-        while (true) {
+        while (true) 
+        {
             Socket socket = listener.accept();
-            try {
+            try 
+            {
                 // 
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 Object object = objectInputStream.readObject();
 
                 // 
-                int result = 0;
-                if (object instanceof CalculateRpcRequest) {
+                String result = "";
+                if (object instanceof CalculateRpcRequest) 
+                {
                     CalculateRpcRequest calculateRpcRequest = (CalculateRpcRequest) object;
-                    if ("add".equals(calculateRpcRequest.getMethod())) {
-                        result = calculator.add(calculateRpcRequest.getA(), calculateRpcRequest.getB());
-                    } else {
-                        throw new UnsupportedOperationException();
+                    if("time".equals(calculateRpcRequest.getMessage())) 
+                    {
+                        LocalDateTime now = LocalDateTime.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        result = now.format(formatter);
+                    } 
+                    else
+                    {
+                        result = calculateRpcRequest.getMessage().toUpperCase();
                     }
                 }
 
                 // 
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-                objectOutputStream.writeObject(new Integer(result));
-            } catch (Exception e) {
+                objectOutputStream.writeObject(new String(result));
+            } catch(Exception e) 
+            {
             	System.out.println("error!");
             } 
         }
