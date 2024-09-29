@@ -4,32 +4,13 @@ public class CalculateRpcRequest implements Serializable {
 
     private static final long serialVersionUID = 7503710091945320739L;
 
-    private String method;
-    private int a;
-    private int b;
+    private String s;
 
-    public String getMethod() {
-        return method;
+    public String getMessage() {
+        return s;
     }
 
-    public void setMethod(String method) {
-        this.method = method;
+    public void setMessage(String s) {
+        this.s = s;
     }
-
-    public int getA() {
-        return a;
-    }
-
-    public void setA(int a) {
-        this.a = a;
-    }
-
-    public int getB() {
-        return b;
-    }
-
-    public void setB(int b) {
-        this.b = b;
-    }
-
 }
